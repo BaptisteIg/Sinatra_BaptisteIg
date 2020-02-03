@@ -32,7 +32,22 @@ class Gossip
     end
 
     def self.update (id, author, content)
+        arr = []
+        self.all.each_with_index do |line, index|
+          if index + 1 == id.to_i
+            line.author = author.to_s
+            line.content = content.to_s
+          end
+        arr << [line.author, line.content]
+        end
 
+        File.delete("./db/gossip.csv")
+
+        CSV.open("db/gossip.csv", "ab") do |row|
+          arr.each do |obj|
+            row << obj
+          end
+        end
     end
-
 end
+    
